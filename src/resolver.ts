@@ -19,17 +19,12 @@ export class NodeNextResolver {
 
   private readonly options: Partial<Options> = {};
 
-  // Regex used to remove base path from module path
-  private readonly embedPathRegex: RegExp;
-
 
   constructor(options?: Partial<Options>) {
 
     if (options) {
       this.options = Object.assign({}, DEFAULT_OPTIONS, options);
     }
-
-  }
 
   }
 
