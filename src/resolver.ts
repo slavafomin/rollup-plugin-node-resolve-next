@@ -142,7 +142,7 @@ export class NodeNextResolver {
 
   }
 
-  private rewritePackage(pkg: any) {
+  private rewritePackage(pkg: any): any {
 
     let order: string[] = [];
 
@@ -155,7 +155,7 @@ export class NodeNextResolver {
     let main = pkg.main;
 
     if (order.length > 0) {
-      for (let key of order) {
+      for (const key of order) {
         if (pkg[key]) {
           main = pkg[key];
           break;
