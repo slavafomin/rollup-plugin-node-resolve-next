@@ -1,7 +1,15 @@
 
 # rollup-plugin-node-resolve-next
 
-<a href="https://badge.fury.io/js/rollup-plugin-node-resolve-next"><img src="https://badge.fury.io/js/rollup-plugin-node-resolve-next.svg" alt="npm version" height="18"></a>
+<!-- NPM Version Badge -->
+<a href="https://badge.fury.io/js/rollup-plugin-node-resolve-next">
+  <img src="https://badge.fury.io/js/rollup-plugin-node-resolve-next.svg" alt="npm version" height="20">
+</a>
+
+<!-- Travis CI Badge -->
+<a href="https://travis-ci.org/slavafomin/rollup-plugin-node-resolve-next">
+  <img src="https://travis-ci.org/slavafomin/rollup-plugin-node-resolve-next.svg?branch=master" alt="Build Status" height="20">
+</a>
 
 
 [Rollup][rollup-org] plugin for imports resolution using enhanced Node.js algorithm.
