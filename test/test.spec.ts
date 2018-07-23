@@ -4,6 +4,7 @@ import 'mocha';
 import {expect} from 'chai';
 
 import {buildAndExecuteCase} from './utils';
+import {BuildTarget, EmbedMode} from '../src/types';
 
 
 describe('rollup-plugin-node-resolve-next', () => {
@@ -68,7 +69,7 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: 'NORMAL'
+          mode: BuildTarget.NORMAL
         }
       });
 
@@ -82,7 +83,7 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: 'ESM2015'
+          mode: BuildTarget.ESM2015
         }
       });
 
@@ -97,7 +98,7 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: 'ESM5'
+          mode: BuildTarget.ESM5
         }
       });
 
@@ -111,7 +112,7 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: 'ESM5'
+          mode: BuildTarget.ESM5
         }
       });
 
@@ -129,9 +130,9 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('embedded-vs-external', {
         pluginOptions: {
-          mode: 'ESM2015',
+          mode: BuildTarget.ESM2015,
           embed: {
-            mode: 'EMBED_EVERYTHING'
+            mode: EmbedMode.EMBED_EVERYTHING
           }
         }
       });
@@ -150,9 +151,9 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('embedded-vs-external', {
         pluginOptions: {
-          mode: 'ESM2015',
+          mode: BuildTarget.ESM2015,
           embed: {
-            mode: 'EMBED_MATCHED',
+            mode: EmbedMode.EMBED_MATCHED,
             patterns: [
               '@scoped/*',
               'no-manifest'
@@ -175,9 +176,9 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('embedded-vs-external', {
         pluginOptions: {
-          mode: 'ESM2015',
+          mode: BuildTarget.ESM2015,
           embed: {
-            mode: 'EMBED_UNMATCHED',
+            mode: EmbedMode.EMBED_UNMATCHED,
             patterns: [
               '@scoped/*'
             ]
@@ -200,6 +201,6 @@ describe('rollup-plugin-node-resolve-next', () => {
 });
 
 
-function expectModuleExports(module: any, exports: Object) {
+function expectModuleExports(module: any, exports: Object): void {
   expect(module).to.deep.equal({ exports });
 }
