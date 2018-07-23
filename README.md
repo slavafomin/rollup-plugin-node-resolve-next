@@ -16,6 +16,12 @@
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" height="20">
 </a>
 
+<!-- MIT License Badge -->
+<a href="https://codeclimate.com/github/slavafomin/rollup-plugin-node-resolve-next/maintainability">
+  <img src="https://api.codeclimate.com/v1/badges/9df208ab261fe8cc64bd/maintainability" alt="Code Climate" height="20">
+</a>
+
+
 ---
 
 [Rollup][rollup-org] plugin for imports resolution using enhanced Node.js algorithm.
