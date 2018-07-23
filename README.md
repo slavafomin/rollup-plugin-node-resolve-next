@@ -34,7 +34,7 @@ Could be used as an alternative to both
   using glob patterns on module ids
   
 - Supports `main`/`module`/`es2015` fields of `package.json`
-  for different [build targets](#Build Targets)
+  for different [build targets](./#Build Targets)
   
 - Reliable: written in TypeScript and automatically tested
 
@@ -69,7 +69,7 @@ export default {
 ## Options
 
 `options.mode` — controls the build target.
-See the [Build Targets](#Build Targets) section for more details
+See the [Build Targets](./#Build Targets) section for more details
 
 `options.embed.mode` — controls the module embedding mode, possible values are:
 
