@@ -4,13 +4,13 @@ import * as resolve from 'resolve';
 import {dirname} from 'path';
 import {Minimatch} from 'minimatch';
 
-import {EmbedOptions, Options} from './types';
+import {BuildTarget, EmbedMode, EmbedOptions, Options} from './types';
 
 
 const DEFAULT_OPTIONS: Partial<Options> = {
-  mode: 'NORMAL',
+  mode: BuildTarget.NORMAL,
   embed: {
-    mode: 'EMBED_EVERYTHING'
+    mode: EmbedMode.EMBED_EVERYTHING
   }
 };
 
@@ -75,11 +75,11 @@ export class NodeNextResolver {
 
     switch (this.options.embed.mode) {
 
-      case 'EMBED_EVERYTHING':
+      case EmbedMode.EMBED_EVERYTHING:
         return true;
 
-      case 'EMBED_MATCHED':
-      case 'EMBED_UNMATCHED':
+      case EmbedMode.EMBED_MATCHED:
+      case EmbedMode.EMBED_UNMATCHED:
         return this.shouldEmbedByPatterns(moduleId);
 
     }
@@ -108,10 +108,10 @@ export class NodeNextResolver {
 
     // Determining whether to embed module or not
     // based on specified embed mode and match result
-    if (matched && embedOptions.mode === 'EMBED_MATCHED') {
+    if (matched && embedOptions.mode === EmbedMode.EMBED_MATCHED) {
       return true;
 
-    } else if (!matched && embedOptions.mode === 'EMBED_UNMATCHED') {
+    } else if (!matched && embedOptions.mode === EmbedMode.EMBED_UNMATCHED) {
       return true;
 
     }

@@ -1,4 +1,16 @@
 
+export const enum BuildTarget {
+  NORMAL = 'NORMAL',
+  ESM5 = 'ESM5',
+  ESM2015 = 'ESM2015'
+}
+
+export const enum EmbedMode {
+  EMBED_EVERYTHING = 'EMBED_EVERYTHING',
+  EMBED_MATCHED = 'EMBED_MATCHED',
+  EMBED_UNMATCHED = 'EMBED_UNMATCHED'
+}
+
 export interface Options {
 
   /**
@@ -6,7 +18,7 @@ export interface Options {
    * In "ESM5" mode the "module" field of the package.json is used with fallback to "main".
    * In "ESM2015" mode the "es2015" field of the package.json is used with fallback to "module" or "main".
    */
-  mode: 'NORMAL' | 'ESM5' | 'ESM2015';
+  mode: BuildTarget;
 
   /**
    * These options control embedding behavior.
@@ -17,7 +29,7 @@ export interface Options {
 
 export interface EmbedOptions {
 
-  mode: 'EMBED_EVERYTHING' | 'EMBED_MATCHED' | 'EMBED_UNMATCHED';
+  mode: EmbedMode;
 
   /**
    * List of glob patterns supported by minimatch.
