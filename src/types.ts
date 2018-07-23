@@ -1,11 +1,11 @@
 
-export const enum BuildTarget {
+export enum BuildTarget {
   NORMAL = 'NORMAL',
   ESM5 = 'ESM5',
   ESM2015 = 'ESM2015'
 }
 
-export const enum EmbedMode {
+export enum EmbedMode {
   EMBED_EVERYTHING = 'EMBED_EVERYTHING',
   EMBED_MATCHED = 'EMBED_MATCHED',
   EMBED_UNMATCHED = 'EMBED_UNMATCHED'
