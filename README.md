@@ -11,6 +11,12 @@
   <img src="https://travis-ci.org/slavafomin/rollup-plugin-node-resolve-next.svg?branch=master" alt="Build Status" height="20">
 </a>
 
+<!-- MIT License Badge -->
+<a href="https://opensource.org/licenses/MIT">
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" height="20">
+</a>
+
+---
 
 [Rollup][rollup-org] plugin for imports resolution using enhanced Node.js algorithm.
 
