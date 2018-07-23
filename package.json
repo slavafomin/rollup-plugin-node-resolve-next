@@ -1,19 +1,27 @@
 {
   "name": "rollup-plugin-node-resolve-next",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Rollup plugin for import resolution using enhanced Node.js algorithm",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
+  "author": "Slava Fomin II",
+  "license": "MIT",
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "test": "mocha -r ts-node/register **/*.spec.ts"
   },
   "keywords": [
-    "rollup-plugin",
-    "rollup"
+    "module",
+    "node",
+    "node-resolve",
+    "npm",
+    "resolve",
+    "rollup",
+    "rollup-plugin"
   ],
-  "author": "Slava Fomin II",
-  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
     "minimatch": "^3.0.4",
     "resolve": "^1.8.1"
