@@ -17,21 +17,12 @@ export interface Options {
 
 export interface EmbedOptions {
 
-  mode: 'DO_NOT_EMBED' | 'EMBED_EVERYTHING' | 'EMBED_MATCHED' | 'EMBED_UNMATCHED';
+  mode: 'EMBED_EVERYTHING' | 'EMBED_MATCHED' | 'EMBED_UNMATCHED';
 
   /**
    * List of glob patterns supported by minimatch.
    * Negative patterns could also be used.
    */
   patterns?: string[];
-
-  /**
-   * A base path used for matching.
-   *
-   * A full absolute path will be resolved for each module,
-   * then base path will be removed from it's beginning (if specified),
-   * then pattern matching will be performed against truncated path.
-   */
-  basePath?: string;
 
 }

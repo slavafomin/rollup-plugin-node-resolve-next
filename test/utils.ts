@@ -1,49 +1,62 @@
 
-import {expect} from 'chai';
 import {OutputChunk, rollup, RollupFileOptions} from 'rollup';
 
 import nodeResolveNext from '../src/plugin';
-import {Options} from '../src/types';
+import {Options as PluginOptions} from '../src/types';
 
 
-export async function expectExports(
+export interface BuildCaseOptions {
+  pluginOptions: Partial<PluginOptions>;
+}
+
+
+export async function buildAndExecuteCase(
   caseName: string,
-  expectedExports: { [key: string]: any },
-  options?: Options
+  options: BuildCaseOptions = {
+    pluginOptions: {}
+  }
+): Promise<any> {
 
-): Promise<void> {
+  const { generated } = await buildCase(caseName, options);
 
-  const module = await runRollup(`cases/${caseName}/index.js`, options);
+  const module = executeBundle(generated);
 
-  Object.keys(expectedExports).forEach(key => {
-    const expected = expectedExports[key];
-    expect(module.exports[key]).to.equal(expected);
+  return { generated, module };
+
+}
+
+export async function buildCase(
+  caseName: string,
+  options: BuildCaseOptions = {
+    pluginOptions: {}
+  }
+): Promise<{ generated: OutputChunk; }> {
+
+  const bundle = await rollup(<RollupFileOptions> {
+    input: `${__dirname}/cases/${caseName}/index.js`,
+    plugins: [
+      nodeResolveNext(options.pluginOptions)
+    ]
   });
 
-}
+  const generated = await bundle.generate({ format: 'cjs' });
 
-export async function runRollup(path: string, options?: Options): Promise<any> {
-
-  const bundle = await rollup({
-    input: __dirname + '/' + path,
-    plugins: [
-      nodeResolveNext(options)
-    ]
-  } as RollupFileOptions);
-
-  return bundle
-    .generate({ format: 'cjs' })
-    .then(executeBundle);
+  return { generated };
 
 }
 
-export function executeBundle(generated: OutputChunk): any {
+
+function executeBundle(generated: OutputChunk): any {
 
   const module = { exports: {} };
 
-  const fn = new Function('module', 'exports', generated.code);
+  const fn = new Function('module', 'exports', 'require', generated.code);
 
-  fn(module, module.exports);
+  const require = function (moduleId: string) {
+    return { name: 'EXTERNAL' };
+  };
+
+  fn(module, module.exports, require);
 
   return module;
 

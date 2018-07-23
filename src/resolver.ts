@@ -26,14 +26,10 @@ export class NodeNextResolver {
   constructor(options?: Partial<Options>) {
 
     if (options) {
-
       this.options = Object.assign({}, DEFAULT_OPTIONS, options);
-
-      if (options.embed && options.embed.basePath) {
-        this.embedPathRegex = new RegExp('^' + options.embed.basePath);
-      }
-
     }
+
+  }
 
   }
 
@@ -46,7 +42,7 @@ export class NodeNextResolver {
       return null;
     }
 
-    const shouldEmbed = this.shouldEmbed(resolvedPath);
+    const shouldEmbed = this.shouldEmbed(importee);
 
     // Returning result to Rollup
     // "false" means — externalize import
@@ -71,45 +67,46 @@ export class NodeNextResolver {
 
   }
 
-  private shouldEmbed(path: string): boolean {
+  private shouldEmbed(moduleId: string): boolean {
 
     if (!this.options.embed) {
       return true;
     }
 
-    switch (this.options.embed.mode) {
+    // Local modules are always embedded
+    if (this.isLocalModule(moduleId)) {
+      return true;
+    }
 
-      case 'DO_NOT_EMBED':
-        return false;
+    switch (this.options.embed.mode) {
 
       case 'EMBED_EVERYTHING':
         return true;
 
       case 'EMBED_MATCHED':
       case 'EMBED_UNMATCHED':
-        return this.shouldEmbedByPatterns(path);
+        return this.shouldEmbedByPatterns(moduleId);
 
     }
 
   }
 
-  private shouldEmbedByPatterns(path: string): boolean {
+  private isLocalModule(moduleId: string): boolean {
+    const localPrefixes = ['./', '../', '/'];
+    return localPrefixes.some(prefix => moduleId.startsWith(prefix));
+  }
+
+  private shouldEmbedByPatterns(moduleId: string): boolean {
 
     const embedOptions: Partial<EmbedOptions> = this.options.embed || {};
 
     const patterns = embedOptions.patterns || [];
 
-    // Removing base path from the path to match if it's specified
-    let pathToMatch = path;
-    if (embedOptions.basePath) {
-      pathToMatch = pathToMatch.replace(this.embedPathRegex!, '');
-    }
-
-    // Matching the path against specified glob patterns
+    // Matching the module ID against specified glob patterns
     let matched = false;
     patterns.forEach(pattern => {
       const minimatch = new Minimatch(pattern);
-      if (minimatch.match(pathToMatch)) {
+      if (minimatch.match(moduleId)) {
         matched = !minimatch.negate;
       }
     });

@@ -1,79 +1,205 @@
 
 import 'mocha';
 
-import {expectExports} from './utils';
+import {expect} from 'chai';
+
+import {buildAndExecuteCase} from './utils';
 
 
 describe('rollup-plugin-node-resolve-next', () => {
 
-  it('simple case / default options', async () => {
+  describe(`with default options`, () => {
 
-    await expectExports('default', {
-      message: 'Hello World'
+    it('simple case / default options', async () => {
+
+      const { module } = await buildAndExecuteCase('default');
+
+      expectModuleExports(module, {
+        message: 'Hello World'
+      });
+
+    });
+
+    it('node module w/o manifest', async () => {
+
+      const { module } = await buildAndExecuteCase('node-module-no-manifest');
+
+      expectModuleExports(module, {
+        name: 'no-manifest'
+      });
+
+    });
+
+    it('node module with manifest, but without fields', async () => {
+
+      const { module } = await buildAndExecuteCase('node-module-manifest-no-fields');
+
+      expectModuleExports(module, {
+        name: 'manifest-no-fields'
+      });
+
+    });
+
+    it('node module with manifest and main field, but wrong index file', async () => {
+
+      const { module } = await buildAndExecuteCase('node-module-manifest-main-wrong-index');
+
+      expectModuleExports(module, {
+        name: 'manifest-main-field-wrong-index'
+      });
+
+    });
+
+    it('scoped node module with manifest, but without fields', async () => {
+
+      const { module } = await buildAndExecuteCase('scoped-node-module-manifest-no-fields');
+
+      expectModuleExports(module, {
+        name: 'scoped-manifest-no-fields'
+      });
+
     });
 
   });
 
-  it('node module w/o manifest', async () => {
+  describe(`with various resolution modes`, () => {
 
-    await expectExports('node-module-no-manifest', {
-      name: 'no-manifest'
+    it('resolves to UMD in default mode', async () => {
+
+      const { module } = await buildAndExecuteCase('full-featured-module', {
+        pluginOptions: {
+          mode: 'NORMAL'
+        }
+      });
+
+      expectModuleExports(module, {
+        name: 'full-featured-module-umd'
+      });
+
+    });
+
+    it('resolves to ESM2015 in ESM2015 mode', async () => {
+
+      const { module } = await buildAndExecuteCase('full-featured-module', {
+        pluginOptions: {
+          mode: 'ESM2015'
+        }
+      });
+
+      expectModuleExports(module, {
+        name: 'full-featured-module-esm2015'
+      });
+
+
+    });
+
+    it('resolves to ESM5 in ESM5 mode', async () => {
+
+      const { module } = await buildAndExecuteCase('full-featured-module', {
+        pluginOptions: {
+          mode: 'ESM5'
+        }
+      });
+
+      expectModuleExports(module, {
+        name: 'full-featured-module-esm5'
+      });
+
+    });
+
+    it('resolves to ESM5 in ESM5 mode', async () => {
+
+      const { module } = await buildAndExecuteCase('full-featured-module', {
+        pluginOptions: {
+          mode: 'ESM5'
+        }
+      });
+
+      expectModuleExports(module, {
+        name: 'full-featured-module-esm5'
+      });
+
     });
 
   });
 
-  it('node module with manifest, but without fields', async () => {
+  describe(`with various embedding modes`, () => {
 
-    await expectExports('node-module-manifest-no-fields', {
-      name: 'manifest-no-fields'
+    it('embeds everything in EMBED_EVERYTHING mode', async () => {
+
+      const { module } = await buildAndExecuteCase('embedded-vs-external', {
+        pluginOptions: {
+          mode: 'ESM2015',
+          embed: {
+            mode: 'EMBED_EVERYTHING'
+          }
+        }
+      });
+
+      expectModuleExports(module, {
+        bar: 'Bar',
+        foo: 'Foo',
+        fullFeaturedModule: 'full-featured-module-esm2015',
+        noManifest: 'no-manifest',
+        scopedManifestNoFields: 'scoped-manifest-no-fields'
+      });
+
     });
 
-  });
+    it('embeds only matched modules in EMBED_MATCHED mode', async () => {
 
-  it('node module with manifest and main field, but wrong index file', async () => {
+      const { module } = await buildAndExecuteCase('embedded-vs-external', {
+        pluginOptions: {
+          mode: 'ESM2015',
+          embed: {
+            mode: 'EMBED_MATCHED',
+            patterns: [
+              '@scoped/*',
+              'no-manifest'
+            ]
+          }
+        }
+      });
 
-    await expectExports('node-module-manifest-main-wrong-index', {
-      name: 'manifest-main-field-wrong-index'
+      expectModuleExports(module, {
+        bar: 'Bar',
+        foo: 'Foo',
+        fullFeaturedModule: 'EXTERNAL',
+        noManifest: 'no-manifest',
+        scopedManifestNoFields: 'scoped-manifest-no-fields'
+      });
+
     });
 
-  });
+    it('embeds only unmatched modules in EMBED_UNMATCHED mode', async () => {
 
-  it('scoped node module with manifest, but without fields', async () => {
+      const { module } = await buildAndExecuteCase('embedded-vs-external', {
+        pluginOptions: {
+          mode: 'ESM2015',
+          embed: {
+            mode: 'EMBED_UNMATCHED',
+            patterns: [
+              '@scoped/*'
+            ]
+          }
+        }
+      });
 
-    await expectExports('scoped-node-module-manifest-no-fields', {
-      name: 'scoped-manifest-no-fields'
-    });
+      expectModuleExports(module, {
+        bar: 'Bar',
+        foo: 'Foo',
+        fullFeaturedModule: 'full-featured-module-esm2015',
+        noManifest: 'no-manifest',
+        scopedManifestNoFields: 'EXTERNAL'
+      });
 
-  });
-
-  it('resolves to UMD in default mode', async () => {
-
-    await expectExports('full-featured-module', {
-      name: 'full-featured-module-umd'
-    }, {
-      mode: 'NORMAL'
-    });
-
-  });
-
-  it('resolves to ESM2015 in ESM2015 mode', async () => {
-
-    await expectExports('full-featured-module', {
-      name: 'full-featured-module-esm2015'
-    }, {
-      mode: 'ESM2015'
-    });
-
-  });
-
-  it('resolves to ESM5 in ESM5 mode', async () => {
-
-    await expectExports('full-featured-module', {
-      name: 'full-featured-module-esm5'
-    }, {
-      mode: 'ESM5'
     });
 
   });
 
 });
+
+
+function expectModuleExports(module: any, exports: Object) {
+  expect(module).to.deep.equal({ exports });
+}
