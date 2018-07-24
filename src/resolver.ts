@@ -1,4 +1,3 @@
-
 import * as resolve from 'resolve';
 
 import {dirname} from 'path';
@@ -146,9 +145,9 @@ export class NodeNextResolver {
 
     let order: string[] = [];
 
-    if ('ESM5' === this.options.mode) {
+    if (this.options.mode === BuildTarget.ESM5) {
       order = ['module'];
-    } else if ('ESM2015' === this.options.mode) {
+    } else if (this.options.mode === BuildTarget.ESM2015) {
       order = ['es2015', 'module'];
     }
 
