@@ -32,7 +32,6 @@ export class NodeNextResolver {
 
   public async resolveId(importee: string, importer?: string): Promise<ResolveIdResult> {
 
-    // Resolving path
     const resolvedPath = await this.resolvePath(importee, importer);
     if (!resolvedPath) {
       // @todo: https://github.com/rollup/rollup/issues/2939
@@ -48,7 +47,7 @@ export class NodeNextResolver {
   }
 
 
-  private async resolvePath(importee: string, importer?: string): Promise<string> {
+  private async resolvePath(importee: string, importer?: string): Promise<string | undefined> {
 
     const resolveOptions: resolve.AsyncOpts = {};
 
@@ -58,6 +57,10 @@ export class NodeNextResolver {
 
     if (this.options.mode) {
       resolveOptions.packageFilter = this.rewritePackage.bind(this);
+    }
+
+    if (this.options.extensions) {
+      resolveOptions.extensions = this.options.extensions;
     }
 
     return await this.runResolve(importee, resolveOptions);
@@ -122,25 +125,34 @@ export class NodeNextResolver {
 
   }
 
-  /**
-   * @todo: replace with promisify
-   */
-  private runResolve(path: string, options: resolve.AsyncOpts): Promise<string> {
+  private async runResolve(path: string, options: resolve.AsyncOpts): Promise<string | undefined> {
 
-    return new Promise((next, reject) => {
+    let result: string | undefined;
 
-      resolve(path, options, (error, result) => {
+    try {
 
-        if (error) {
-          reject(error);
-          return;
-        }
+      result = await new Promise((next, reject) => {
 
-        next(result);
+        resolve(path, options, (error, $result) => {
+
+          if (error) {
+            reject(error);
+            return;
+          }
+
+          next($result);
+
+        });
 
       });
 
-    });
+    } catch (error) {
+
+      // Ignoring errors
+
+    }
+
+    return result;
 
   }
 

@@ -25,6 +25,13 @@ export interface Options {
    */
   embed?: EmbedOptions;
 
+  /**
+   * List of supported extensions.
+   *
+   * Example: ['.js', '.jsx']
+   */
+  extensions?: string[];
+
 }
 
 export interface EmbedOptions {

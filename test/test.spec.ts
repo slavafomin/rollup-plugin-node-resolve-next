@@ -3,8 +3,8 @@ import 'mocha';
 
 import { expect } from 'chai';
 
-import { buildAndExecuteCase } from './utils';
 import { BuildTarget, EmbedMode } from '../src/types';
+import { buildAndExecuteCase } from './utils';
 
 
 describe('rollup-plugin-node-resolve-next', () => {
@@ -194,6 +194,21 @@ describe('rollup-plugin-node-resolve-next', () => {
         scopedManifestNoFields: 'EXTERNAL',
       });
 
+    });
+
+  });
+
+  it('supports custom extensions', async () => {
+
+    const { module } = await buildAndExecuteCase('custom-extensions', {
+      pluginOptions: {
+        extensions: ['.js', '.jsx', '.jsm'],
+      },
+    });
+
+    expectModuleExports(module, {
+      foo: 'Foo',
+      bar: 'Bar',
     });
 
   });

@@ -73,10 +73,12 @@ export default {
           'tslib',
         ] ,
       },
+      extensions: ['.js', '.jsx'],
     }),
   ],
 };
 ```
+
 
 ## Options
 
@@ -91,6 +93,8 @@ See the [Build Targets](#build-targets) section for more details
 
 `options.embed.patterns` — list of glob patterns used to configure the matching.
 Used only in `EMBED_MATCHED` and `EMBED_UNMATCHED` modes.
+
+`options.extensions` — list of allowed extensions (`['.js']` by default).
 
 
 ### Build Targets

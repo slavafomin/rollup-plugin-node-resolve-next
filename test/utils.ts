@@ -1,7 +1,7 @@
 
 import { rollup, RollupOutput } from 'rollup';
 
-import nodeResolveNext from '../src/plugin';
+import { nodeResolveNext } from '../src/plugin';
 import { Options as PluginOptions } from '../src/types';
 
 
