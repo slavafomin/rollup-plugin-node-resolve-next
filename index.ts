@@ -1,7 +1,7 @@
 
-import nodeResolveNext from './src/plugin';
+import { nodeResolveNext } from './src/plugin';
 
 
-export {Options, EmbedOptions} from './src/types';
+export { Options, EmbedOptions, BuildTarget, EmbedMode } from './src/types';
 
-module.exports = nodeResolveNext;
+export default nodeResolveNext;
