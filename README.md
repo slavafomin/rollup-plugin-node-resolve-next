@@ -61,7 +61,7 @@ export default {
   input: 'main.js',
   output: {
     file: 'bundle.js',
-    format: 'es'
+    format: 'es',
   },
   plugins: [
     nodeResolveNext({
@@ -70,14 +70,14 @@ export default {
         mode: 'EMBED_MATCHED',
         patterns: [
           '@lodash/*',
-          'tslib'
-        ] 
-      }
-    })
-  ]
+          'tslib',
+        ] ,
+      },
+    }),
+  ],
 };
 ```
-   
+
 ## Options
 
 `options.mode` — controls the build target.
@@ -100,7 +100,7 @@ of the imported modules for different build targets:
 
  - In `NORMAL` mode only the `main` field is used *(this is the default)*
  - In `ESM5` mode the `module` field is used with fallback to `main`
- - In `ESM2015` mode the `es2015` field of is used with fallback to `module` or `main`
+ - In `ESM2015` mode the `es2015` field is used with fallback to `module` or `main`
  
 
 ## Maintainers
@@ -110,7 +110,7 @@ of the imported modules for different build targets:
 
 ## License
 
-Copyright (c) 2018 Slava Fomin II
+Copyright (c) 2018—2019 Slava Fomin II
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
