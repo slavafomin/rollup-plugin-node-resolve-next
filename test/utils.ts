@@ -1,8 +1,8 @@
 
-import {OutputChunk, rollup, RollupFileOptions} from 'rollup';
+import { rollup, RollupOutput } from 'rollup';
 
 import nodeResolveNext from '../src/plugin';
-import {Options as PluginOptions} from '../src/types';
+import { Options as PluginOptions } from '../src/types';
 
 
 export interface BuildCaseOptions {
@@ -13,47 +13,59 @@ export interface BuildCaseOptions {
 export async function buildAndExecuteCase(
   caseName: string,
   options: BuildCaseOptions = {
-    pluginOptions: {}
-  }
+    pluginOptions: {},
+  },
+
 ): Promise<any> {
 
-  const { generated } = await buildCase(caseName, options);
+  const output = await buildCase(caseName, options);
 
-  const module = executeBundle(generated);
+  const module = executeBundle(output);
 
-  return { generated, module };
+  return { output, module };
 
 }
 
 export async function buildCase(
   caseName: string,
   options: BuildCaseOptions = {
-    pluginOptions: {}
-  }
-): Promise<{ generated: OutputChunk; }> {
+    pluginOptions: {},
+  },
 
-  const bundle = await rollup(<RollupFileOptions> {
+): Promise<RollupOutput> {
+
+  const bundle = await rollup({
     input: `${__dirname}/cases/${caseName}/index.js`,
     plugins: [
-      nodeResolveNext(options.pluginOptions)
-    ]
+      nodeResolveNext(options.pluginOptions),
+    ],
   });
 
-  const generated = await bundle.generate({ format: 'cjs' });
-
-  return { generated };
+  return bundle.generate({
+    format: 'cjs',
+  });
 
 }
 
 
-function executeBundle(generated: OutputChunk): any {
+function executeBundle(output: RollupOutput): any {
 
-  const module = { exports: {} };
+  if (1 !== output.output.length) {
+    throw new Error(`Rollup returned multiple chunks, but should return only one`);
+  }
 
-  const fn = new Function('module', 'exports', 'require', generated.code);
+  const code = output.output[0].code;
 
-  const require = function (moduleId: string) {
-    return { name: 'EXTERNAL' };
+  const module = {
+    exports: {},
+  };
+
+  const fn = new Function('module', 'exports', 'require', code);
+
+  const require = function (moduleId: string): { name: string } {
+    return {
+      name: 'EXTERNAL'
+    };
   };
 
   fn(module, module.exports, require);

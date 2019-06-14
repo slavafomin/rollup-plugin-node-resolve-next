@@ -1,10 +1,10 @@
 
 import 'mocha';
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 
-import {buildAndExecuteCase} from './utils';
-import {BuildTarget, EmbedMode} from '../src/types';
+import { buildAndExecuteCase } from './utils';
+import { BuildTarget, EmbedMode } from '../src/types';
 
 
 describe('rollup-plugin-node-resolve-next', () => {
@@ -16,7 +16,7 @@ describe('rollup-plugin-node-resolve-next', () => {
       const { module } = await buildAndExecuteCase('default');
 
       expectModuleExports(module, {
-        message: 'Hello World'
+        message: 'Hello World',
       });
 
     });
@@ -26,7 +26,7 @@ describe('rollup-plugin-node-resolve-next', () => {
       const { module } = await buildAndExecuteCase('node-module-no-manifest');
 
       expectModuleExports(module, {
-        name: 'no-manifest'
+        name: 'no-manifest',
       });
 
     });
@@ -36,7 +36,7 @@ describe('rollup-plugin-node-resolve-next', () => {
       const { module } = await buildAndExecuteCase('node-module-manifest-no-fields');
 
       expectModuleExports(module, {
-        name: 'manifest-no-fields'
+        name: 'manifest-no-fields',
       });
 
     });
@@ -46,7 +46,7 @@ describe('rollup-plugin-node-resolve-next', () => {
       const { module } = await buildAndExecuteCase('node-module-manifest-main-wrong-index');
 
       expectModuleExports(module, {
-        name: 'manifest-main-field-wrong-index'
+        name: 'manifest-main-field-wrong-index',
       });
 
     });
@@ -56,7 +56,7 @@ describe('rollup-plugin-node-resolve-next', () => {
       const { module } = await buildAndExecuteCase('scoped-node-module-manifest-no-fields');
 
       expectModuleExports(module, {
-        name: 'scoped-manifest-no-fields'
+        name: 'scoped-manifest-no-fields',
       });
 
     });
@@ -69,12 +69,12 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: BuildTarget.NORMAL
-        }
+          mode: BuildTarget.NORMAL,
+        },
       });
 
       expectModuleExports(module, {
-        name: 'full-featured-module-umd'
+        name: 'full-featured-module-umd',
       });
 
     });
@@ -83,12 +83,12 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: BuildTarget.ESM2015
-        }
+          mode: BuildTarget.ESM2015,
+        },
       });
 
       expectModuleExports(module, {
-        name: 'full-featured-module-esm2015'
+        name: 'full-featured-module-esm2015',
       });
 
 
@@ -98,12 +98,12 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: BuildTarget.ESM5
-        }
+          mode: BuildTarget.ESM5,
+        },
       });
 
       expectModuleExports(module, {
-        name: 'full-featured-module-esm5'
+        name: 'full-featured-module-esm5',
       });
 
     });
@@ -112,12 +112,12 @@ describe('rollup-plugin-node-resolve-next', () => {
 
       const { module } = await buildAndExecuteCase('full-featured-module', {
         pluginOptions: {
-          mode: BuildTarget.ESM5
-        }
+          mode: BuildTarget.ESM5,
+        },
       });
 
       expectModuleExports(module, {
-        name: 'full-featured-module-esm5'
+        name: 'full-featured-module-esm5',
       });
 
     });
@@ -132,9 +132,9 @@ describe('rollup-plugin-node-resolve-next', () => {
         pluginOptions: {
           mode: BuildTarget.ESM2015,
           embed: {
-            mode: EmbedMode.EMBED_EVERYTHING
-          }
-        }
+            mode: EmbedMode.EMBED_EVERYTHING,
+          },
+        },
       });
 
       expectModuleExports(module, {
@@ -142,7 +142,7 @@ describe('rollup-plugin-node-resolve-next', () => {
         foo: 'Foo',
         fullFeaturedModule: 'full-featured-module-esm2015',
         noManifest: 'no-manifest',
-        scopedManifestNoFields: 'scoped-manifest-no-fields'
+        scopedManifestNoFields: 'scoped-manifest-no-fields',
       });
 
     });
@@ -156,10 +156,10 @@ describe('rollup-plugin-node-resolve-next', () => {
             mode: EmbedMode.EMBED_MATCHED,
             patterns: [
               '@scoped/*',
-              'no-manifest'
-            ]
-          }
-        }
+              'no-manifest',
+            ],
+          },
+        },
       });
 
       expectModuleExports(module, {
@@ -167,7 +167,7 @@ describe('rollup-plugin-node-resolve-next', () => {
         foo: 'Foo',
         fullFeaturedModule: 'EXTERNAL',
         noManifest: 'no-manifest',
-        scopedManifestNoFields: 'scoped-manifest-no-fields'
+        scopedManifestNoFields: 'scoped-manifest-no-fields',
       });
 
     });
@@ -180,10 +180,10 @@ describe('rollup-plugin-node-resolve-next', () => {
           embed: {
             mode: EmbedMode.EMBED_UNMATCHED,
             patterns: [
-              '@scoped/*'
-            ]
-          }
-        }
+              '@scoped/*',
+            ],
+          },
+        },
       });
 
       expectModuleExports(module, {
@@ -191,7 +191,7 @@ describe('rollup-plugin-node-resolve-next', () => {
         foo: 'Foo',
         fullFeaturedModule: 'full-featured-module-esm2015',
         noManifest: 'no-manifest',
-        scopedManifestNoFields: 'EXTERNAL'
+        scopedManifestNoFields: 'EXTERNAL',
       });
 
     });

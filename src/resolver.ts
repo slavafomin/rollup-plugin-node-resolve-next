@@ -1,16 +1,18 @@
+
 import * as resolve from 'resolve';
 
-import {dirname} from 'path';
-import {Minimatch} from 'minimatch';
+import { Minimatch } from 'minimatch';
+import { dirname } from 'path';
+import { ResolveIdResult } from 'rollup';
 
-import {BuildTarget, EmbedMode, EmbedOptions, Options} from './types';
+import { BuildTarget, EmbedMode, EmbedOptions, Options } from './types';
 
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   mode: BuildTarget.NORMAL,
   embed: {
-    mode: EmbedMode.EMBED_EVERYTHING
-  }
+    mode: EmbedMode.EMBED_EVERYTHING,
+  },
 };
 
 
@@ -28,12 +30,13 @@ export class NodeNextResolver {
   }
 
 
-  async resolveId(importee: string, importer?: string): Promise<string | null | false> {
+  public async resolveId(importee: string, importer?: string): Promise<ResolveIdResult> {
 
     // Resolving path
     const resolvedPath = await this.resolvePath(importee, importer);
     if (!resolvedPath) {
-      return null;
+      // @todo: https://github.com/rollup/rollup/issues/2939
+      return null as any;
     }
 
     const shouldEmbed = this.shouldEmbed(importee);
@@ -120,7 +123,7 @@ export class NodeNextResolver {
   }
 
   /**
-   * @todo: replaced with promisify
+   * @todo: replace with promisify
    */
   private runResolve(path: string, options: resolve.AsyncOpts): Promise<string> {
 
