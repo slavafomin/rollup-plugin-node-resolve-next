@@ -1,4 +1,9 @@
 
+# 0.2.1
+
+- Fixed handling of null-prefixed module IDs
+- Updated dependencies
+
 # 0.2.0
 
 - Added support for custom extensions

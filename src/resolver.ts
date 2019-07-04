@@ -32,10 +32,13 @@ export class NodeNextResolver {
 
   public async resolveId(importee: string, importer?: string): Promise<ResolveIdResult> {
 
+    if (/\0/.test(importee)) {
+      return null;
+    }
+
     const resolvedPath = await this.resolvePath(importee, importer);
     if (!resolvedPath) {
-      // @todo: https://github.com/rollup/rollup/issues/2939
-      return null as any;
+      return null;
     }
 
     const shouldEmbed = this.shouldEmbed(importee);

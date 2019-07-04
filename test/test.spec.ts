@@ -213,6 +213,12 @@ describe('rollup-plugin-node-resolve-next', () => {
 
   });
 
+  it('null-prefixed-module-id', async () => {
+
+    const { module } = await buildAndExecuteCase('null-prefixed-module-id');
+
+  });
+
 });
 
 

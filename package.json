@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-node-resolve-next",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Rollup plugin for import resolution using enhanced Node.js algorithm",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "minimatch": "^3.0.4",
-    "resolve": "^1.11.0"
+    "resolve": "^1.11.1"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -36,9 +36,9 @@
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
     "npm-run-all": "^4.1.5",
-    "rollup": "^1.15.4",
-    "ts-node": "^8.2.0",
-    "tslint": "^5.17.0",
+    "rollup": "^1.16.4",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
     "typescript": "^3.5.2"
   }
 }
