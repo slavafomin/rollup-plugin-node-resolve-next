@@ -3,6 +3,7 @@ import 'mocha';
 
 import { expect } from 'chai';
 
+import { NodeNextResolver } from '../src/resolver';
 import { BuildTarget, EmbedMode } from '../src/types';
 import { buildAndExecuteCase } from './utils';
 
@@ -213,9 +214,30 @@ describe('rollup-plugin-node-resolve-next', () => {
 
   });
 
-  it('null-prefixed-module-id', async () => {
+  it('correctly handles null-prefixed module IDs', async () => {
 
-    const { module } = await buildAndExecuteCase('null-prefixed-module-id');
+    await buildAndExecuteCase('null-prefixed-module-id');
+
+  });
+
+  describe('NodeNextResolver', () => {
+
+    it('resolves symlinks in paths', async () => {
+
+      const resolver = new NodeNextResolver({
+        embed: {
+          mode: EmbedMode.EMBED_EVERYTHING,
+        },
+        resolveSymlinks: true,
+      });
+
+      const resolvedPath = await resolver.resolveId('no-manifest-symlinked', `${__dirname}/cases/default/index.js`);
+
+      expect(resolvedPath).to.be.a('string');
+
+      expect(resolvedPath).to.match(/\/node_modules\/no-manifest\/index.js$/);
+
+    });
 
   });
 
