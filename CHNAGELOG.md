@@ -1,4 +1,10 @@
 
+# 0.3.0
+
+## BREAKING CHANGES
+
+- added flag to resolve symlinks in paths, which is enabled by default
+
 # 0.2.1
 
 - Fixed handling of null-prefixed module IDs

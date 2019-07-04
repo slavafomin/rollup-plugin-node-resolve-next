@@ -32,6 +32,13 @@ export interface Options {
    */
   extensions?: string[];
 
+  /**
+   * Whether to resolve symlinks in the destination paths.
+   * This will help to deduplicate dependencies in monorepo projects
+   * or in projects where `npm link` is used.
+   */
+  resolveSymlinks?: boolean;
+
 }
 
 export interface EmbedOptions {

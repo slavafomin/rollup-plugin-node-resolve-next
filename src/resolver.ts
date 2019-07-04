@@ -1,11 +1,16 @@
 
 import * as resolve from 'resolve';
 
+import { realpath } from 'fs';
 import { Minimatch } from 'minimatch';
 import { dirname } from 'path';
 import { ResolveIdResult } from 'rollup';
+import { promisify } from 'util';
 
 import { BuildTarget, EmbedMode, EmbedOptions, Options } from './types';
+
+
+const $realpath = promisify(realpath);
 
 
 const DEFAULT_OPTIONS: Partial<Options> = {
@@ -13,6 +18,7 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   embed: {
     mode: EmbedMode.EMBED_EVERYTHING,
   },
+  resolveSymlinks: true,
 };
 
 
@@ -36,9 +42,13 @@ export class NodeNextResolver {
       return null;
     }
 
-    const resolvedPath = await this.resolvePath(importee, importer);
+    let resolvedPath = await this.resolvePath(importee, importer);
     if (!resolvedPath) {
       return null;
+    }
+
+    if (this.options.resolveSymlinks) {
+      resolvedPath = await $realpath(resolvedPath);
     }
 
     const shouldEmbed = this.shouldEmbed(importee);

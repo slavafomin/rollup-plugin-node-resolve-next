@@ -43,12 +43,14 @@ Could be used as an alternative to both
   **Module resolution** and **embedding conditionals** are two separate concepts
 
 - Allows flexibility in control of which modules will be embedded and which externalized
-  using glob patterns on module ids
+  using glob patterns on module ids (more flexible and convenient solution)
   
 - Supports `main`/`module`/`es2015` fields of `package.json`
   for different [build targets](#build-targets)
   
 - Reliable: written in TypeScript and automatically tested
+  
+- Deduplicates dependencies by resolving symlinks in paths (useful in monorepo projects)
 
 
 ## Example
@@ -82,19 +84,23 @@ export default {
 
 ## Options
 
-`options.mode` — controls the build target.
+`options.mode` `[enum/string]` — controls the build target.
 See the [Build Targets](#build-targets) section for more details
 
-`options.embed.mode` — controls the module embedding mode, possible values are:
+`options.embed.mode` `[enum/string]` — controls the module embedding mode, possible values are:
 
 - `EMBED_EVERYTHING` — embeds all imported modules to the bundle
 - `EMBED_MATCHED` — embeds only matched modules
 - `EMBED_UNMATCHED` — embeds only non-matched modules
 
-`options.embed.patterns` — list of glob patterns used to configure the matching.
+`options.embed.patterns` `[Array<string>]` — list of glob patterns used to configure the matching.
 Used only in `EMBED_MATCHED` and `EMBED_UNMATCHED` modes.
 
-`options.extensions` — list of allowed extensions (`['.js']` by default).
+`options.extensions` `[Array<string>]` — list of allowed extensions (`['.js']` by default).
+
+`options.resolveSymlinks` `[boolean]` — Whether to resolve symlinks in the destination paths.
+This will help to deduplicate dependencies in monorepo projects or in projects where
+`npm link` is used.
 
 
 ### Build Targets
