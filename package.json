@@ -7,10 +7,13 @@
   "author": "Slava Fomin II",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf ./dist && tsc",
+    "clean": "rm -rf ./dist",
+    "build": "run-s clean build:tsc",
+    "build:tsc": "tsc",
     "test": "run-s lint test:mocha",
     "test:mocha": "mocha -r ts-node/register **/*.spec.ts",
-    "lint": "tslint --project ./tsconfig.json -c ./tslint.json ./index.ts ./src/**/*.ts"
+    "lint": "tslint --project ./tsconfig.json -c ./tslint.json ./index.ts ./src/**/*.ts",
+    "prepublishOnly": "run-s build test"
   },
   "keywords": [
     "module",
